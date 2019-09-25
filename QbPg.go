@@ -5,7 +5,7 @@ type QueryBuilder interface {
 	String() string
 	Select(fields ...string) QueryBuilder
 	OrderBy(fields ...string) QueryBuilder
-	// SelectDistinct(fields ...string) QueryBuilder
+	Distinct(fields ...string) QueryBuilder
 	Where(fields ...string) QueryBuilder
 	Limit(fields ...string) QueryBuilder
 	Offset(fields ...string) QueryBuilder
@@ -15,17 +15,17 @@ type QueryBuilder interface {
 	Like(value string, fields ...string) QueryBuilder
 	IsNull(value string) QueryBuilder
 	As(alias string) QueryBuilder
-	// InnerJoin(fields ...string) QueryBuilder
-	// LeftJoin(fields ...string) QueryBuilder
-	// SelfJoin(fields ...string) QueryBuilder
-	// FullOuterJoin(fields ...string) QueryBuilder
-	// CrossJoin(fields ...string) QueryBuilder
-	// NaturalJoin(fields ...string) QueryBuilder
+	From(value string) QueryBuilder
+	InnerJoin(value string) QueryBuilder
+	LeftJoin(table string) QueryBuilder
+	FullOuterJoin(table string) QueryBuilder
+	CrossJoin(table string) QueryBuilder
+	NaturalJoin(joinType, table string) QueryBuilder
 	GroupBy(fields ...string) QueryBuilder
 	Having(fields ...string) QueryBuilder
-	Union(qb1, qb2 QueryBuilder) QueryBuilder
-	Intersect(qb1, qb2 QueryBuilder) QueryBuilder
-	Except(qb1, qb2 QueryBuilder) QueryBuilder
+	Union() QueryBuilder
+	Intersect() QueryBuilder
+	Except() QueryBuilder
 	// GroupingSets(fields ...string) QueryBuilder
 	// Cube(fields ...string) QueryBuilder
 	// RollUp(fields ...string) QueryBuilder

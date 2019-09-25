@@ -26,6 +26,14 @@ func (qb *PGQueryBuilder) Select(fields ...string) QueryBuilder {
 	return qb
 }
 
+// Distinct for postgres SELECT DISTINCT clause
+func (qb *PGQueryBuilder) Distinct(fields ...string) QueryBuilder {
+	qb.Tokens = append(qb.Tokens,
+		"DISTINCT",
+		strings.Join(fields, CommaSpace))
+	return qb
+}
+
 // OrderBy for postgres order by statement
 func (qb *PGQueryBuilder) OrderBy(fields ...string) QueryBuilder {
 	qb.Tokens = append(qb.Tokens,
@@ -104,6 +112,43 @@ func (qb *PGQueryBuilder) As(alias string) QueryBuilder {
 	return qb
 }
 
+// From for postgres FROM clause
+func (qb *PGQueryBuilder) From(table string) QueryBuilder {
+	qb.Tokens = append(qb.Tokens, "FROM", table)
+	return qb
+}
+
+// InnerJoin for postgres INNER JOIN clause
+func (qb *PGQueryBuilder) InnerJoin(table string) QueryBuilder {
+	qb.Tokens = append(qb.Tokens, "INNER JOIN", table)
+	return qb
+}
+
+// LeftJoin for postgres LEFT JOIN clause
+func (qb *PGQueryBuilder) LeftJoin(table string) QueryBuilder {
+	qb.Tokens = append(qb.Tokens, "LEFT JOIN", table)
+	return qb
+}
+
+// FullOuterJoin for postgres FULL OUTER JOIN clause
+func (qb *PGQueryBuilder) FullOuterJoin(table string) QueryBuilder {
+	qb.Tokens = append(qb.Tokens, "FULL OUTER JOIN", table)
+	return qb
+}
+
+// CrossJoin for postgres CROSS JOIN clause
+func (qb *PGQueryBuilder) CrossJoin(table string) QueryBuilder {
+	qb.Tokens = append(qb.Tokens, "CROSS JOIN", table)
+	return qb
+}
+
+// NaturalJoin for postgres NATURAL [INNER|OUTER|LEFT] JOIN clause
+func (qb *PGQueryBuilder) NaturalJoin(joinType, table string) QueryBuilder {
+	qb.Tokens = append(qb.Tokens,
+		"NATURAL", "[", joinType, "]", "JOIN", table)
+	return qb
+}
+
 // GroupBy for postgres GROUP BY clause
 func (qb *PGQueryBuilder) GroupBy(fields ...string) QueryBuilder {
 	qb.Tokens = append(qb.Tokens,
@@ -121,29 +166,20 @@ func (qb *PGQueryBuilder) Having(fields ...string) QueryBuilder {
 }
 
 // Union for postgres UNION clause
-func (qb *PGQueryBuilder) Union(qb1, qb2 QueryBuilder) QueryBuilder {
-	qb.Tokens = append(qb.Tokens,
-		qb1.String(),
-		"UNION",
-		qb2.String())
+func (qb *PGQueryBuilder) Union() QueryBuilder {
+	qb.Tokens = append(qb.Tokens, "UNION")
 	return qb
 }
 
 // Intersect for postgres INTERSECT clause
-func (qb *PGQueryBuilder) Intersect(qb1, qb2 QueryBuilder) QueryBuilder {
-	qb.Tokens = append(qb.Tokens,
-		qb1.String(),
-		"INTERSECT",
-		qb2.String())
+func (qb *PGQueryBuilder) Intersect() QueryBuilder {
+	qb.Tokens = append(qb.Tokens, "INTERSECT")
 	return qb
 }
 
 // Except for postgres EXCEPT clause
-func (qb *PGQueryBuilder) Except(qb1, qb2 QueryBuilder) QueryBuilder {
-	qb.Tokens = append(qb.Tokens,
-		qb1.String(),
-		"EXCEPT",
-		qb2.String())
+func (qb *PGQueryBuilder) Except() QueryBuilder {
+	qb.Tokens = append(qb.Tokens, "EXCEPT")
 	return qb
 }
 
